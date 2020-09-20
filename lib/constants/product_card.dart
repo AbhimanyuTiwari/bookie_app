@@ -13,7 +13,6 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget cachedNetworkImage(String mediaUrl) {
       return Container(
-        width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -31,7 +30,7 @@ class ProductCard extends StatelessWidget {
           imageUrl: mediaUrl,
           fit: BoxFit.cover,
 
-          width: double.infinity,
+          
           placeholder: (context, url) => Padding(
             child: CircularProgressIndicator(),
             padding: EdgeInsets.all(20.0),
@@ -41,16 +40,16 @@ class ProductCard extends StatelessWidget {
       );
     }
     return Container(
-      decoration: BoxDecoration(
-        color: Color(0XFFFFFFFF),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: Color(0xfff8f8f8), blurRadius: 15, spreadRadius: 10),
-        ],
-      ),
-
+      // decoration: BoxDecoration(
+      //   color: Color(0XFFFFFFFF),
+      //   borderRadius: BorderRadius.all(Radius.circular(20)),
+      //   boxShadow: <BoxShadow>[
+      //     BoxShadow(color: Color(0xfff8f8f8), blurRadius: 15, spreadRadius: 10),
+      //   ],
+      // ),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.only( bottom: 5y),
+
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
@@ -75,15 +74,13 @@ class ProductCard extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.orange,
-                      ),
-                      Image.network(book.image1)
+                      CircularProgressIndicator(),
+                      //Image.network(book.image1)
+                      cachedNetworkImage(book.image1)
                     ],
                   ),
                 ),
-                // SizedBox(height: 5),
+                 SizedBox(height: 10),
                 TitleText(
                   text: book.title,
                   fontSize: 14,
@@ -94,7 +91,7 @@ class ProductCard extends StatelessWidget {
                   color: Colors.orange,
                 ),
                 TitleText(
-                  text:book.price.toString(),
+                  text:"\₹ ${book.price.toString()}",
                   fontSize:  16,
                 ),
               ],

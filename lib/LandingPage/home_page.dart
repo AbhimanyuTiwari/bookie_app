@@ -69,8 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: GridView(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
-                    childAspectRatio: 4 / 3,
-                    mainAxisSpacing: 30,
+                    childAspectRatio: 3/ 2,
+                    mainAxisSpacing: 20,
                     crossAxisSpacing: 20),
                 padding: EdgeInsets.only(left: 20),
                 scrollDirection: Axis.horizontal,
@@ -89,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
           }
+
           return Center(
               child: SizedBox(
                   height: 50,

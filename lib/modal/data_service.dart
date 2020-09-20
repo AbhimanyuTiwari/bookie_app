@@ -65,8 +65,12 @@ class BooksInfo{
    this.value,this.isDashboard
 });
   Stream<List<Books>> get booksList{
+    if(value=="Books Related To Your Course")
+      return booksRef.limit(10).snapshots().map(_booksFromSnapshot);
     if(isDashboard)
     return booksRef.where("category",isEqualTo: value).limit(4).snapshots().map(_booksFromSnapshot);
+    else
+      return booksRef.where("title",isGreaterThanOrEqualTo: value).snapshots().map(_booksFromSnapshot);
   }
  List<Books> _booksFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc) {

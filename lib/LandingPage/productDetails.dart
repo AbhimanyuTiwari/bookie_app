@@ -22,6 +22,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     with TickerProviderStateMixin {
   final Books bookData;
 
+
   _ProductDetailPageState({this.bookData});
 
   AnimationController controller;
@@ -29,42 +30,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   Animation<double> animation;
   Map book;
 
-  static List<String> imgList;
   String ownerName = "";
   String ownerPhoto = "";
-  final List<Widget> imageSliders = imgList
-      .map((item) => Container(
-            child: Container(
-              margin: EdgeInsets.all(5.0),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Stack(
-                    children: <Widget>[
-                      Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(200, 0, 0, 0),
-                                Color.fromARGB(0, 0, 0, 0)
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                        ),
-                      ),
-                    ],
-                  )),
-            ),
-          ))
-      .toList();
 
   setOwner() async {
     book = {
@@ -76,9 +43,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       "author": bookData.author,
       "userId": bookData.userId,
     };
-    imgList.insert(0, bookData.image1);
-    imgList.insert(1, bookData.image2);
-    imgList.insert(2, bookData.image3);
+
     DocumentSnapshot doc = await usersRef.document(book["userId"]).get();
     setState(() {
       ownerName = doc.data["name"];
@@ -94,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     animation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: controller, curve: Curves.easeInToLinear));
     controller.forward();
-    imgList.clear();
+
     setOwner();
   }
 
@@ -106,44 +71,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   bool isLiked = true;
 
-  Widget _productImage() {
-    return Column(children: [
-      CarouselSlider(
-        items: imageSliders,
-        options: CarouselOptions(
-            autoPlay: false,
-            enlargeCenterPage: true,
-            // aspectRatio: 2.0,
-            height: 290,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-              });
-            }),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: imgList.map((url) {
-          int index = imgList.indexOf(url);
-          return Container(
-            width: 8.0,
-            height: 8.0,
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _current == index
-                  ? Color.fromRGBO(0, 0, 0, 0.9)
-                  : Color.fromRGBO(0, 0, 0, 0.4),
-            ),
-          );
-        }).toList(),
-      ),
-    ]);
-  }
-
   Widget _detailWidget() {
     return DraggableScrollableSheet(
-        maxChildSize: .8,
+        maxChildSize: .9,
         initialChildSize: .47,
         minChildSize: .47,
         builder: (context, scrollController) {
@@ -179,7 +109,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Expanded(child: ClipRect(child: TitleText(text: book['title'], fontSize: 25))),
+                        Expanded(
+                            child: ClipRect(
+                                child: TitleText(
+                                    text: book['title'], fontSize: 25))),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
@@ -321,6 +254,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             onPressed: () {},
           ),
         ),
+        SizedBox(height: 30,),
       ],
     );
   }
@@ -336,6 +270,78 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    List<String> imgList = [
+      widget.book.image1,
+      widget.book.image2,
+      widget.book.image3
+    ];
+    final List<Widget> imageSliders = imgList
+        .map((item) => Container(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.network(item,fit: BoxFit.fitHeight, width: 1000.0),
+                        Positioned(
+                          bottom: 0.0,
+                          left: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(200, 0, 0, 0),
+                                  Color.fromARGB(0, 0, 0, 0)
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20.0),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+            ))
+        .toList();
+    Widget _productImage() {
+      return Column(children: [
+        CarouselSlider(
+          items: imageSliders,
+          options: CarouselOptions(
+              autoPlay: false,
+              enlargeCenterPage: true,
+              // aspectRatio: 2.0,
+              height: 290,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: imgList.map((url) {
+            int index = imgList.indexOf(url);
+            return Container(
+              width: 8.0,
+              height: 8.0,
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _current == index
+                    ? Color.fromRGBO(0, 0, 0, 0.9)
+                    : Color.fromRGBO(0, 0, 0, 0.4),
+              ),
+            );
+          }).toList(),
+        ),
+      ]);
+    }
 
     return Scaffold(
       floatingActionButton: _flotingButton(),
@@ -367,7 +373,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                   _productImage(),
                 ],
               ),
-              _detailWidget()
+              _detailWidget(),
+
             ],
           ),
         ),

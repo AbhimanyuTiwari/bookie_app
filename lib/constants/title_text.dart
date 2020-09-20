@@ -20,6 +20,6 @@ class TitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(text,
         style: GoogleFonts.muli(
-            fontSize: fontSize, fontWeight: fontWeight, color: color,));
+            fontSize: fontSize, fontWeight: fontWeight, color: color,),textAlign: TextAlign.center,);
   }
 }

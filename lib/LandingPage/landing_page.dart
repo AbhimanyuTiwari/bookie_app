@@ -1,23 +1,20 @@
 import 'package:bookie/LandingPage/home_page.dart';
 import 'package:bookie/LandingPage/nav_drawer.dart';
-import 'package:bookie/Wrapper.dart';
-import 'package:bookie/constants/header.dart';
-import 'package:bookie/constants/title_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:bookie/LandingPage/search_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key, this.title}) : super(key: key);
 
   final String title;
-
   @override
   _MainPageState createState() => _MainPageState();
 }
-
+bool isHomePageSelected = true;
+String search;
 class _MainPageState extends State<MainPage> {
-  bool isHomePageSelected = true;
-  String search;
+
+
   Widget _search() {
     return Container(
       color: Theme.of(context).primaryColor,
@@ -32,6 +29,14 @@ class _MainPageState extends State<MainPage> {
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: TextField(
+                onSubmitted: (val){
+                  setState(() {
+
+                    search=val;
+                  });
+
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Search()));
+                },
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                     border: InputBorder.none,
