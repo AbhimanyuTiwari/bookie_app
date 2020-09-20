@@ -62,34 +62,35 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: TitleText(text: "No books Available",fontSize: 25,),
               );
 
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width * .7,
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    childAspectRatio: 3/ 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20),
-                padding: EdgeInsets.only(left: 20),
-                scrollDirection: Axis.horizontal,
-                children: books
-                    .map(
-                      (book) => GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailPage(book: book,)));
-                        },
-                        child: ProductCard(
-                          book: book,
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            );
-          }
+            return  GridView.builder(
+                primary: true,
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                // crossAxisCount: 2,
+                // mainAxisSpacing: 10,
+                // childAspectRatio: 0.80,
+              padding: EdgeInsets.only(bottom: 10),
 
+              gridDelegate:  new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+                physics: ScrollPhysics(),
+
+                itemCount:books.length ,
+                itemBuilder:(context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailPage(book: books[index],)));
+                    },
+                    child: ProductCard(
+                      book: books[index],
+                    ),
+                  );
+                },
+
+            );
+
+
+        }
           return Center(
               child: SizedBox(
                   height: 50,
@@ -102,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height - 210,
+     // height: MediaQuery.of(context).size.height - 210,
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         dragStartBehavior: DragStartBehavior.down,
